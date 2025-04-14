@@ -1,0 +1,134 @@
+/*    /\_/\
+ *   (= ._.)
+ *   / >  \>
+ */       //
+ //Hi Stalker aajkal code bhi stalk karne lage?! :)
+ //solve 3 questions of div -2 within an 1hour to reach 1800 ASAP
+ //believe nigga , you are not a fool
+ //prefix sum, BS, strong rakho 3rd question wahi hota hai
+ //try identifying patterns fast fast 2nd question wahi hota hai
+ //read first question properly, dont solve it blindly otherwise u lose valuable info and lose time.
+#include <bits/stdc++.h>
+#define mod 1000000007
+using namespace std;
+
+bool is_prime(int n) {
+    if (n <= 1) return false;
+    if (n <= 3) return true;
+    if (n % 2 == 0 || n % 3 == 0) return false;
+    for (int i = 5; i * i <= n; i += 6) {
+        if (n % i == 0 || n % (i + 2) == 0) return false;
+    }
+    return true;
+}
+
+vector<int> sieve(int max_num) {
+    vector<bool> is_prime(max_num + 1, true);
+    is_prime[0] = is_prime[1] = false;
+    for (int i = 2; i * i <= max_num; ++i) {
+        if (is_prime[i]) {
+            for (int j = i * i; j <= max_num; j += i) {
+                is_prime[j] = false;
+            }
+        }
+    }
+    vector<int> primes;
+    for (int i = 2; i <= max_num; ++i) {
+        if (is_prime[i]) {
+            primes.push_back(i);
+        }
+    }
+    // return is_prime;
+    return primes;
+}
+
+bool is_palindrome(int a) {
+    string g = to_string(a);
+    string cg = g;
+    reverse(g.begin(), g.end());
+    return g == cg;
+}
+
+int factorial(int a) {
+    if (a == 1 or a == 0) return 1;
+    return factorial(a - 1) * a;
+}
+
+long long mod_inverse(long long base, long long exponent, long long modulus) {
+  long long result = 1;
+  while(exponent > 0) {
+    if(exponent % 2 == 1){
+      result = (result * base) % modulus;
+    }
+    base = (base * base) % modulus;
+    exponent /= 2;
+  }
+  return result;
+}
+/*
+vector<pair<long long, long long>> items(a);
+for (auto& [f, s] : items) {
+        cin >> f;
+    }
+    for (auto& [f, s] : items) {
+        cin >> s;
+    }
+*/
+// input pair 1 step
+/*#include <bits/stdc++.h>
+#define mod 1000000007
+using namespace std;*/
+/*sort(Jobs.begin(), Jobs.end(), [](const vector<int>& a, const vector<int>& b)
+   { return a[2] > b[2];
+        });*/
+// sort 2d array
+
+/*
+int start = lower_bound(same.begin(), same.end(), l) - same.begin();
+int end = lower_bound(same.begin(), same.end(), r + 1) - same.begin();
+*/
+// finds the largest element greater than or equal
+/*
+#include <bits/stdc++.h>
+#define mod 1000000007
+using namespace std;
+*/
+/*
+**************************************************************************************************
+**************************************************************************************************
+
+
+                    ***        **************
+                    ***        **************
+                    ***  ***   ***   ***
+                    ***  ***   ***   ***
+       shai         ***        ***                    tan
+                    *************************
+                    *************************
+                               ***        ***
+                         ***   ***   ***  ***
+                         ***   ***   ***  ***
+                    **************        ***
+                    **************        ***
+
+**************************************************************************************************
+**************************************************************************************************
+*/
+//vector<int> &primes(parameter for sieve)
+void solve() {
+  
+}
+
+signed main() {
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+  //vector<int> primes = sieve(10000000);
+  int q = 1;
+  cin >> q;
+  while (q--) {
+    //solve(primes);
+    solve();
+  }
+}
+// author: shai_tan --------> 19.0.12.12.8.18.7.19.7.0
+// tan(pi/2) = infinite
