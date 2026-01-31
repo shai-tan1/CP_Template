@@ -1,98 +1,141 @@
-/*    /\_/\
- *   (= ._.)
- *   / >  \>
- */       //
- //Hi Stalker aajkal code bhi stalk karne lage?! :)
- //solve 3 questions of div -2 within an 1hour to reach 1800 ASAP
- //believe nigga , you are not a fool
- //prefix sum, BS, strong rakho 3rd question wahi hota hai
- //try identifying patterns fast fast 2nd question wahi hota hai
- //read first question properly, dont solve it blindly otherwise u lose valuable info and lose time.
-#include <bits/stdc++.h>
-#define mod 1000000007
+#include<bits/stdc++.h>
 using namespace std;
+#define fastio() ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL)
+#define mod 1000000007
+#define mod1 998244353
+#define INF 1e18
+#define nline "\n"
+#define pb push_back
+#define ppb pop_back
+#define mp make_pair
+#define ff first
+#define ss second
+#define PI 3.141592653589793238462
+#define set_bits __builtin_popcountll
+#define sz(x) ((int)(x).size())
+#define all(x) (x).begin(), (x).end()
 
-bool is_prime(int n) {
-    if (n <= 1) return false;
-    if (n <= 3) return true;
+typedef long long ll;
+typedef unsigned long long ull;
+typedef long double lld;
+// typedef tree<pair<int, int>, null_type, less<pair<int, int>>, rb_tree_tag, tree_order_statistics_node_update > pbds; // find_by_order, order_of_key
+
+#ifndef ONLINE_JUDGE
+#define debug(x) cerr << #x <<" "; print(x); cerr << endl;
+#else
+#define debug(x)
+#endif
+
+void print(const ll t) {cerr << t;}
+void print(const int t) {cerr << t;}
+void print(const string& t) {cerr << t;}
+void print(const char t) {cerr << t;}
+void print(const lld t) {cerr << t;}
+void print(const double t) {cerr << t;}
+void print(const ull t) {cerr << t;}
+
+template <class T, class V> void print(pair <T, V> p);
+template <class T> void print(vector <T> v);
+template <class T> void print(set <T> v);
+template <class T, class V> void print(map <T, V> v);
+template <class T> void print(multiset <T> v);
+template <class T, class V> void print(pair <T, V> p) {cerr << "{"; print(p.ff); cerr << ","; print(p.ss); cerr << "}";}
+template <class T> void print(vector <T> v) {cerr << "[ "; for (T i : v) {print(i); cerr << " ";} cerr << "]";}
+template <class T> void print(set <T> v) {cerr << "[ "; for (T i : v) {print(i); cerr << " ";} cerr << "]";}
+template <class T> void print(multiset <T> v) {cerr << "[ "; for (T i : v) {print(i); cerr << " ";} cerr << "]";}
+template <class T, class V> void print(map <T, V> v) {cerr << "[ "; for (auto i : v) {print(i); cerr << " ";} cerr << "]";}
+
+// #include <ext/pb_ds/assoc_container.hpp>
+// using namespace __gnu_pbds;
+
+// global variables
+bool morefound = false;
+vector<long long> fact;
+vector<long long> invFact;
+// global variables
+
+// useful functions
+void fropen() {
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+}
+long long power(long long base, long long exp, const long long m) {
+    long long res = 1;
+    base %= m;
+    while (exp > 0) {
+        if (exp & 1)
+            res = (res * base) % m;
+        base = (base * base) % m;
+        exp >>= 1;
+    }
+    return res;
+}
+long long modularInverse(long long n, long long m) {
+    return power(n, m - 2, m);
+}
+long long C[60][60];
+void precompute(int max_n, long long ignored_mod) {
+    for (int i = 0; i <= 55; i++) {
+        C[i][0] = 1;
+        for (int j = 1; j <= i; j++) {
+            C[i][j] = C[i-1][j-1] + C[i-1][j];
+        }
+    }
+}
+
+long long ncr(long long n, long long r) {
+    if (r < 0 || r > n) return 0;
+    return C[n][r];
+}
+long long rangeBitwiseAnd(long long m, long long n) {
+    while (m < n) {
+        n = n & (n - 1ll);
+    }
+    return n;
+}
+long long rangeBitwiseXor(long long n){
+    long long val = n % 4;
+    if (val == 0)
+        return n;
+    else if (val == 1)
+        return 1;
+    else if (val == 2)
+        return n + 1;
+    else if (val == 3)
+        return 0;
+    return 0;
+}
+long long rangeBitwiseXor(long long l, long long r){
+    return (rangeBitwiseXor(l - 1) ^ rangeBitwiseXor(r));
+}
+
+bool isPrime(ll n) {
+    if (n <= 3) return n > 1;
     if (n % 2 == 0 || n % 3 == 0) return false;
-    for (int i = 5; i * i <= n; i += 6) {
-        if (n % i == 0 || n % (i + 2) == 0) return false;
+    for (ll i = 5; i * i <= n; i += 6) {
+        if (n % i == 0 || n % (i + 2) == 0) {
+            return false;
+        }
     }
     return true;
 }
 
-vector<int> sieve(int max_num) {
-    vector<bool> is_prime(max_num + 1, true);
-    is_prime[0] = is_prime[1] = false;
-    for (int i = 2; i * i <= max_num; ++i) {
-        if (is_prime[i]) {
-            for (int j = i * i; j <= max_num; j += i) {
-                is_prime[j] = false;
-            }
-        }
+ll query(ll l, ll r, vector<vector<ll>>& SPARSE_TABLE) {
+    if (r < 0) return LLONG_MIN;
+    ll len = r - l + 1;
+    ll k = 0;
+    while ((1 << (k + 1)) <= len) {
+        k++;
     }
-    vector<int> primes;
-    for (int i = 2; i <= max_num; ++i) {
-        if (is_prime[i]) {
-            primes.push_back(i);
-        }
-    }
-    // return is_prime;
-    return primes;
+    return max(SPARSE_TABLE[l][k], SPARSE_TABLE[r - (1ll << k) + 1][k]);
 }
+// useful functions
 
-bool is_palindrome(int a) {
-    string g = to_string(a);
-    string cg = g;
-    reverse(g.begin(), g.end());
-    return g == cg;
-}
+// useful snippets
+// ordered_set o_set;
+// o_set.order_of_key(5)
+// useful snippets
 
-int factorial(int a) {
-    if (a == 1 or a == 0) return 1;
-    return factorial(a - 1) * a;
-}
-
-long long mod_inverse(long long base, long long exponent, long long modulus) {
-  long long result = 1;
-  while(exponent > 0) {
-    if(exponent % 2 == 1){
-      result = (result * base) % modulus;
-    }
-    base = (base * base) % modulus;
-    exponent /= 2;
-  }
-  return result;
-}
-/*
-vector<pair<long long, long long>> items(a);
-for (auto& [f, s] : items) {
-        cin >> f;
-    }
-    for (auto& [f, s] : items) {
-        cin >> s;
-    }
-*/
-// input pair 1 step
-/*#include <bits/stdc++.h>
-#define mod 1000000007
-using namespace std;*/
-/*sort(Jobs.begin(), Jobs.end(), [](const vector<int>& a, const vector<int>& b)
-   { return a[2] > b[2];
-        });*/
-// sort 2d array
-
-/*
-int start = lower_bound(same.begin(), same.end(), l) - same.begin();
-int end = lower_bound(same.begin(), same.end(), r + 1) - same.begin();
-*/
-// finds the largest element greater than or equal
-/*
-#include <bits/stdc++.h>
-#define mod 1000000007
-using namespace std;
-*/
 /*
 **************************************************************************************************
 **************************************************************************************************
@@ -102,7 +145,7 @@ using namespace std;
                     ***        **************
                     ***  ***   ***   ***
                     ***  ***   ***   ***
-       shai         ***        ***                    tan
+                    ***        ***
                     *************************
                     *************************
                                ***        ***
@@ -114,21 +157,73 @@ using namespace std;
 **************************************************************************************************
 **************************************************************************************************
 */
-//vector<int> &primes(parameter for sieve)
 void solve() {
-  
+    
 }
 
 signed main() {
-  ios_base::sync_with_stdio(false);
-  cin.tie(NULL);
-  //vector<int> primes = sieve(10000000);
-  int q = 1;
-  cin >> q;
-  while (q--) {
-    //solve(primes);
-    solve();
-  }
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+     // #ifndef ONLINE_JUDGE
+     // freopen("error.txt", "w", stderr);
+     // #endif
+    //fropen();
+    // used to read i/p txt, o/p txt if mentioned use this
+    // vector<vector<pair<int,int>>> factors(300001);
+    // vector<int> spf(300001);
+    // for (int i = 0; i <= 300000; i++) {
+    //     spf[i] = i;
+    // }
+    // for (int p = 2; p * p <= 300000; p++) {
+    //     if (spf[p] == p) {  // p is prime
+    //         for (int m = p*p; m <= 300000; m += p) {
+    //             if (spf[m] == m)
+    //                 spf[m] = p;
+    //         }
+    //     }
+    // }
+    // for (int x = 2; x <= 300000; x++) {
+    //     int t = x;
+    //     while (t > 1) {
+    //         int p = spf[t], cnt = 0;
+    //         while (spf[t] == p) {
+    //             t /= p;
+    //             cnt++;
+    //         }
+    //         factors[x].emplace_back(p, cnt);
+    //     }
+    // }
+    // vector<vector<int>> full(200001);
+    // for (int d = 1; d <= 200000; d++) {
+    //     for (int x = d; x <= 200000; x += d) {
+    //         full[x].emplace_back(d);
+    //     }
+    // }
+    // factors will have prime factors, their power as well
+    // factors[30] --> {2,1},{3,1},{5,1}--> 2^1 * 3^1 * 5^1
+    //precompute(300000, mod1);
+    // this will make all the factorials of 1->300000, used in fact[], or used in computing ncr
+
+    // take this section of code and paste in solve
+    // vector SPARSE_TABLE(n, vector<ll>(20, -1));
+    // for (ll i = 0; i < n; i++) {
+    //     SPARSE_TABLE[i][0] = a[i];
+    // }
+    // for (ll k = 1; k < 20; k++) {
+    //     for (ll i = 0; i + (1 << k) - 1 < n; i++) {
+    //         SPARSE_TABLE[i][k] = max(SPARSE_TABLE[i][k - 1], SPARSE_TABLE[i + (1 << (k - 1))][k - 1]);
+    //     }
+    // }
+    int q = 1;
+    cin >> q;
+    while (q--) {
+        solve();
+    }
 }
-// author: shai_tan --------> 19.0.12.12.8.18.7.19.7.0
+// author: shai_tan --------> 0.7.20.20.15.25.14.0.14.7
 // tan(pi/2) = infinite
+// created on 23-06-2025
+///*    /\_/\
+// *   (= ._.)
+// *   / >  \>
+// *  /     //
