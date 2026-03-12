@@ -121,6 +121,44 @@ ll query(ll l, ll r, vector<vector<ll>>& SPARSE_TABLE) {
     }
     return max(SPARSE_TABLE[l][k], SPARSE_TABLE[r - (1ll << k) + 1][k]);
 }
+
+struct DSU {
+    vector<int> parent, size;
+    int components;
+
+    DSU(int n) {
+        parent.resize(n + 1);
+        size.resize(n + 1, 1);
+        components = n;
+        for (int i = 0; i <= n; i++) {
+            parent[i] = i;
+        }
+    }
+
+    int find(int v) {
+        if (v == parent[v])
+            return v;
+        return parent[v] = find(parent[v]);
+    }
+
+    bool Union(int a, int b) {
+        a = find(a);
+        b = find(b);
+        if (a != b) {
+            if (size[a] < size[b])
+                swap(a, b);
+            parent[b] = a;
+            size[a] += size[b];
+            components--;
+            return true;
+        }
+        return false;
+    }
+
+    int get(int v) {
+        return size[find(v)];
+    }
+};
 // useful functions
 
 // useful snippets
@@ -150,7 +188,7 @@ ll query(ll l, ll r, vector<vector<ll>>& SPARSE_TABLE) {
 **************************************************************************************************
 */
 void solve() {
-    
+
 }
 
 signed main() {
