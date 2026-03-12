@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <code>fastio()</code> • <code>PBDS</code> • <code>Sparse Table</code> • <code>Combinatorics</code>
+  <code>fastio()</code> • <code>PBDS</code> • <code>Sparse Table</code> • <code>Combinatorics</code> • <code>DSU</code>
 </p>
 
 ---
@@ -29,11 +29,14 @@ Includes GCC's `__gnu_pbds` extensions, giving you an out-of-the-box `ordered_se
 ### 3. Comprehensive Math & Number Theory Library
 Pre-coded, optimized functions ready to be uncommented when needed:
 * **Modular Arithmetic:** Binary exponentiation (`power`) and Modular Multiplicative Inverse.
-* **Combinatorics:** $O(N^2)$ precomputation for $nCr$ using Pascal's triangle to handle smaller constraints safely.
+* **Combinatorics:** $O(N)$ precomputation for factorials and inverse factorials to calculate `nCr` in $O(1)$ time.
 * **Primes & Factors:** $O(\sqrt{N})$ primality testing, plus pre-commented Sieve of Eratosthenes (SPF) for $O(\log N)$ prime factorization.
 * **Bitwise Operations:** $O(1)$ Range Bitwise XOR and Range Bitwise AND algorithms.
 
-### 4. Range Queries
+### 4. Graph Data Structures
+* **Disjoint Set Union (DSU):** A drop-in `struct` utilizing path compression and union by size for $O(\alpha(N))$ amortized time complexity. Natively tracks the total number of connected components and the size of individual sets.
+
+### 5. Range Queries
 * **Sparse Table:** Pre-commented $O(N \log N)$ build and $O(1)$ query setup for Range Maximum/Minimum Queries (RMQ).
 
 ---
@@ -48,7 +51,9 @@ To utilize the debugging tools and file I/O, ensure you compile or run your code
 vector<int> arr = {1, 2, 3};
 debug(arr); // Outputs to stderr: arr [ 1 2 3 ]
 ```
-Activating SnippetsThe main() function contains highly useful, commented-out blocks for common CP patterns.
+
+### Activating Snippets
+The main() function contains highly useful, commented-out blocks for common CP patterns.
 Simply uncomment the required block:
 Need prime factors? Uncomment the spf block.
 Need $O(1)$ range maximums? Uncomment the SPARSE_TABLE block and paste it into solve().
