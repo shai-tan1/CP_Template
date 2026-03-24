@@ -155,6 +155,10 @@ struct DSU {
         return false;
     }
 
+    void reset(int x) {
+        parent[x] = x;
+        size[x] = 0;
+    }
     int get(int v) {
         return size[find(v)];
     }
