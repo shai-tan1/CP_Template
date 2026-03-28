@@ -9,7 +9,7 @@
 </p>
 
 ---
-
+[![License: MIT](https://img.shields.io/badge/License-MIT-purple.svg)](https://opensource.org/licenses/MIT)
 ## 🚀 Overview
 
 This repository contains my personal C++ template used for competitive programming. It is built for speed, rapid prototyping, and flawless local debugging without risking Time Limit Exceeded (TLE) errors on judging servers.
