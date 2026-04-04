@@ -16,6 +16,7 @@ using namespace std;
 #define set_bits __builtin_popcountll
 #define sz(x) ((int)(x).size())
 #define all(x) (x).begin(), (x).end()
+#define endl '\n'
 
 typedef long long ll;
 typedef unsigned long long ull;
@@ -69,8 +70,23 @@ ll power(ll base, ll exp, ll m) {
     }
     return res;
 }
+ll extgcd(ll a, ll b, ll &x, ll &y) {
+    if (b == 0) { x = 1; y = 0; return a; }
+    ll x1, y1;
+    ll gcd = extgcd(b, a % b, x1, y1);
+    x = y1;
+    y = x1 - y1 * (a / b);
+    return gcd;
+}
+
 ll modularInverse(ll n, ll m) {
     return power(n, m - 2, m);
+}
+
+ll modularInverse(ll a, ll m, ll version) {
+    ll x, y;
+    extgcd(a, m, x, y);
+    return (x % m + m) % m;
 }
 
 void precompute(int n) {
@@ -79,6 +95,7 @@ void precompute(int n) {
     invFact[n] = power(fact[n], mod - 2, mod);
     for (int i = n - 1; i >= 0; i--) invFact[i] = (invFact[i + 1] * (i + 1)) % mod;
 }
+
 ll ncr(ll n, ll r) {
     if (r < 0 || r > n) return 0;
     return fact[n] * invFact[r] % mod * invFact[n - r] % mod;
@@ -89,6 +106,7 @@ ll rangeBitwiseAnd(ll m, ll n) {
     }
     return n;
 }
+
 ll rangeBitwiseXor(ll n){
     ll val = n % 4;
     if (val == 0)  return n;
@@ -97,6 +115,7 @@ ll rangeBitwiseXor(ll n){
     if (val == 3)  return 0;
     return 0;
 }
+
 ll rangeBitwiseXor(ll l, ll r){
     return (rangeBitwiseXor(l - 1) ^ rangeBitwiseXor(r));
 }
@@ -191,8 +210,9 @@ struct DSU {
 **************************************************************************************************
 **************************************************************************************************
 */
-void solve() {
 
+void solve() {
+    
 }
 
 signed main() {
@@ -213,7 +233,7 @@ signed main() {
     // for (int i = 0; i <= 300000; i++) {
     //     spf[i] = i;
     // }
-
+    //
     // for (int p = 2; p * p <= 300000; p++) {
     //     if (spf[p] == p) {  // p is prime
     //         for (int m = p*p; m <= 300000; m += p) {
@@ -222,7 +242,7 @@ signed main() {
     //         }
     //     }
     // }
-
+    //
     // for (int x = 2; x <= 300000; x++) {
     //     int t = x;
     //     while (t > 1) {
@@ -234,7 +254,7 @@ signed main() {
     //         factors[x].emplace_back(p, cnt);
     //     }
     // }
-
+    //
     // vector<vector<int>> full(200001);
     // for (int d = 1; d <= 200000; d++) {
     //     for (int x = d; x <= 200000; x += d) {
